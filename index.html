@@ -49,16 +49,25 @@
         //}).addTo(map);
 
         var geojsonLineas = new L.GeoJSON.AJAX('./shapes.json',{
-            style: function () {
+            style: function (feature) {
                 return {
-                    color: "#A30000",
+                    color: "#" + (feature.properties.route_color || "FF0000"),
                     weight: 3,
+                    opacity: 1,
                 };
             },
             onEachFeature: function (feature, layer) {
                 layer.bindPopup(feature.properties.shape_id);
+                    "Route: " + feature.properties.route_id +
+                    "<br>Shape: " + feature.properties.shape_id
             }
-        }).addTo(map);
+        });
+        
+        geojsonLineas.on('data:loaded', function () {
+            map.fitBounds(geojsonLineas.getBounds());
+        });
+
+        geojsonLineas.addTo(map);
 
         let lineasInfo;
         
@@ -76,9 +85,10 @@
                 },
                 style: function (feature) {
                     return {
+                        radius: 5,
                         color: getColorLinea(feature.properties.lin),
                         fillColor: getColorLinea(feature.properties.lin),
-                        fillOpacity: 0.5
+                        fillOpacity: 1
                     };
                 }
             }).addTo(map);
@@ -101,9 +111,4 @@
         cargarTrenes();
     </script>
 </body>
-    
 </html>
-
-
-
-
