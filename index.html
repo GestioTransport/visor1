@@ -7,6 +7,11 @@
     <title>Línies FGC</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
         #map {
             height: 100%;
             width: 100%;
@@ -90,14 +95,15 @@
             lineasInfo = await resp.json();
 
             const trenes = L.realtime(trenesURL, {
-                interval: 2 * 1000,
+                interval: 2 * 60 * 1000,
                 pointToLayer: function(geoJsonPoint, latlng) {
                     return L.circleMarker(latlng);
                 },
                 style: function (feature) {
                     return {
-                        radius: 5,
-                        color: getColorLinea(feature.properties.lin),
+                        radius: 4.5,
+                        color: "#2E2E2E",
+                        weight: 0.5,
                         fillColor: getColorLinea(feature.properties.lin),
                         fillOpacity: 1
                     };
@@ -123,6 +129,7 @@
     </script>
 </body>
 </html>
+
 
 
 
